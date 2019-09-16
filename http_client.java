@@ -16,12 +16,30 @@ public http_client(String address)
 	//HttpURLConnection.setFollowRedirects(true);
 	HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	conn.setInstanceFollowRedirects(true);
-	conn.connect();
-	String header = conn.getHeaderField(0);
-	//String content = conn.getContent(); 
-        int i = 0;
+
+	boolean redirect = false;
+	int status = conn.getResponseCode();
 	BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
-	writer.write(tof + address);
+	//checks for redirects. 
+	if (status != HttpURLConnection.HTTP_OK) {
+		if (status == HttpURLConnection.HTTP_MOVED_TEMP || status == HttpURLConnection.HTTP_MOVED_PERM ||status == HttpURLConnection.HTTP_SEE_OTHER)
+		redirect = true;
+			}
+	//updates url to redirect and opens new connection
+	if (redirect){
+	System.out.println("url redirected");
+		String newurl = conn.getHeaderField("Location");
+		url = new URL(newurl);
+		conn = (HttpURLConnection) url.openConnection();
+		writer.write("URL redirected to " + url);
+		writer.newLine();
+	}
+
+	String header = conn.getHeaderField(0); 
+        
+	
+	writer.write(tof + url);
+	int i = 0;
         while ((header = conn.getHeaderField(i)) != null) {
 	String key = conn.getHeaderFieldKey(i);
 	writer.newLine();
