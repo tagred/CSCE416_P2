@@ -29,7 +29,7 @@ public class http_client {
 			}
 			// updates url to redirect and opens new connection
 			if (redirect) {
-				System.out.println("url redirected");
+				//System.out.println("url redirected");
 				String newurl = conn.getHeaderField("Location");
 				url = new URL(newurl);
 				conn = (HttpURLConnection) url.openConnection();
