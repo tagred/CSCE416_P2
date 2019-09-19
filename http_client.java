@@ -19,12 +19,12 @@ public class http_client {
 			conn.setInstanceFollowRedirects(true);
 
 			boolean redirect = false;
-			int status = conn.getResponseCode();
+			int check = conn.getResponseCode();
 			BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
 			// checks for redirects.
-			if (status != HttpURLConnection.HTTP_OK) {
-				if (status == HttpURLConnection.HTTP_MOVED_TEMP || status == HttpURLConnection.HTTP_MOVED_PERM
-						|| status == HttpURLConnection.HTTP_SEE_OTHER)
+			if (check != HttpURLConnection.HTTP_OK) {
+				if (check == HttpURLConnection.HTTP_MOVED_TEMP || check == HttpURLConnection.HTTP_MOVED_PERM
+						|| check == HttpURLConnection.HTTP_SEE_OTHER)
 					redirect = true;
 			}
 			// updates url to redirect and opens new connection
